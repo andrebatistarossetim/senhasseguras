@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas Seguras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 300px;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #senha {
+            margin-top: 15px;
+            font-weight: bold;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h2>Gerador de Senhas</h2>
+    <label for="tamanho">Tamanho:</label>
+    <input type="number" id="tamanho" min="6" value="12">
+    <br>
+    <button onclick="gerarSenha()">Gerar Senha</button>
+    <p id="senha"></p>
+</div>
+
+<script>
+function gerarSenha() {
+    const tamanho = parseInt(document.getElementById('tamanho').value);
+    if (tamanho < 6) {
+        alert("A senha deve ter pelo menos 6 caracteres!");
+        return;
+    }
+
+    const letrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const letrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
+    const numeros = "0123456789";
+    const simbolos = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+    // Garantir pelo menos 1 de cada tipo
+    let senha = [
+        letrasMaiusculas[Math.floor(Math.random() * letrasMaiusculas.length)],
+        letrasMinusculas[Math.floor(Math.random() * letrasMinusculas.length)],
+        numeros[Math.floor(Math.random() * numeros.length)],
+        simbolos[Math.floor(Math.random() * simbolos.length)]
+    ];
+
+    const todos = letrasMaiusculas + letrasMinusculas + numeros + simbolos;
+
+    while (senha.length < tamanho) {
+        senha.push(todos[Math.floor(Math.random() * todos.length)]);
+    }
+
+    // Embaralhar a senha
+    for (let i = senha.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [senha[i], senha[j]] = [senha[j], senha[i]];
+    }
+
+    document.getElementById('senha').textContent = senha.join('');
+}
+</script>
+
+</body>
+</html>
